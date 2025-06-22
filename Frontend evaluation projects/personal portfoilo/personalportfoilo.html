@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Portfolio</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #f5f7fa;
+      --text: #2c3e50;
+      --section: #fff;
+      --highlight: #2980b9;
+      --footer: #34495e;
+    }
+
+    body.dark-mode {
+      --bg: #1e1e1e;
+      --text: #f1f1f1;
+      --section: #2c2c2c;
+      --highlight: #3498db;
+      --footer: #111;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', sans-serif;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    header, footer {
+      background: var(--footer);
+      color: white;
+      text-align: center;
+      padding: 20px 10px;
+      position: relative;
+    }
+
+    .profile-img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid white;
+      background: white;
+    }
+
+    .dark-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+
+    .dark-toggle input[type="checkbox"] {
+      display: none;
+    }
+
+    .toggle-label {
+      cursor: pointer;
+      font-size: 18px;
+      color: white;
+    }
+
+    main {
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    section {
+      background: var(--section);
+      padding: 20px;
+      margin-bottom: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      transition: background 0.3s;
+    }
+
+    h1, h2 {
+      color: var(--highlight);
+    }
+
+    form input,
+    form textarea,
+    form button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      transition: 0.3s ease;
+    }
+
+    form input:focus,
+    form textarea:focus {
+      border-color: var(--highlight);
+      outline: none;
+      box-shadow: 0 0 5px rgba(41, 128, 185, 0.3);
+    }
+
+    form button {
+      background: var(--highlight);
+      color: white;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+
+    form button:hover {
+      background: #1c5980;
+    }
+
+    .social-icons a {
+      margin: 0 10px;
+      color: white;
+      text-decoration: none;
+      font-size: 20px;
+      transition: color 0.3s;
+    }
+
+    .social-icons a:hover {
+      color: var(--highlight);
+    }
+
+    @media (max-width: 600px) {
+      .profile-img {
+        width: 80px;
+        height: 80px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="dark-toggle">
+      <label class="toggle-label">
+        <input type="checkbox" id="darkSwitch">
+        <i class="fa-solid fa-moon"></i>
+      </label>
+    </div>
+    <img src="./profile photo.jpeg" alt="Profile" class="profile-img">
+    <h1>Manikandaraj</h1>
+    <p>Java Developer Trainee</p>
+    <div class="social-icons">
+      <a href="https://github.com/manikandaraj-T-N" target="_blank"><i class="fab fa-github"></i></a>
+      <a href="https://www.linkedin.com/in/manikandaraj-t-n-834189173/" target="_blank"><i class="fab fa-linkedin"></i></a>
+      <a href="mailto:manikandarajnataraj@gmail.com"><i class="fas fa-envelope"></i></a>
+    </div>
+  </header>
+
+  <main>
+    <section id="about">
+      <h2>About Me</h2>
+      <p>I am passionate about web development, focused on building responsive and user-friendly websites. I enjoy learning new technologies and solving real-world problems with code.</p>
+    </section>
+
+    <section id="projects">
+      <h2>Projects</h2>
+      <ul>
+        <li><strong>Blog Site</strong> – A personal blogging platform built with HTML/CSS and JavaScript.</li>
+        <li><strong>Portfolio</strong> – This very portfolio website showcasing my work and skills.</li>
+      </ul>
+    </section>
+
+    <section id="skills">
+      <h2>Skills</h2>
+      <p>HTML5, CSS3, JavaScript, Responsive Design, Git & GitHub, Bootstrap</p>
+    </section>
+
+    <section id="contact">
+      <h2>Contact Me</h2>
+      <form>
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <textarea rows="5" placeholder="Your Message" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Manikandaraj. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const toggle = document.getElementById('darkSwitch');
+    toggle.addEventListener('change', function () {
+      document.body.classList.toggle('dark-mode');
+    });
+  </script>
+</body>
+</html>
