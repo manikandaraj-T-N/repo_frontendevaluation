@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Order Summary</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      padding: 20px;
+    }
+
+    .summary-container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    h1, h2 {
+      text-align: center;
+    }
+
+    .section {
+      margin-bottom: 20px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      margin: 5px 0;
+    }
+
+    .total {
+      font-weight: bold;
+      font-size: 18px;
+      text-align: right;
+      margin-top: 10px;
+    }
+
+    .back-btn {
+      display: block;
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .back-btn a {
+      background: #333;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 6px;
+    }
+
+    .back-btn a:hover {
+      background-color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="summary-container">
+    <h1>🧾 Order Summary</h1>
+
+    <div class="section" id="customer-info">
+      <h2>Shipping & Contact Info</h2>
+      <p><strong>Name:</strong> <span id="sum-name"></span></p>
+      <p><strong>Address:</strong> <span id="sum-address"></span></p>
+      <p><strong>Email:</strong> <span id="sum-email"></span></p>
+      <p><strong>Payment:</strong> <span id="sum-payment"></span></p>
+    </div>
+
+    <div class="section" id="order-items">
+      <h2>Items Purchased</h2>
+      <ul id="item-list"></ul>
+      <div class="total" id="total-amount"></div>
+    </div>
+
+    <div class="back-btn">
+      <a href="index.html">← Back to Home</a>
+    </div>
+  </div>
+
+  <script>
+    const order = JSON.parse(localStorage.getItem('orderSummary'));
+    if (!order) {
+      document.body.innerHTML = "<h2 style='text-align:center;'>No order data found.</h2>";
+    } else {
+      document.getElementById('sum-name').textContent = order.name;
+      document.getElementById('sum-address').textContent = order.address;
+      document.getElementById('sum-email').textContent = order.email;
+      document.getElementById('sum-payment').textContent = order.paymentMethod;
+
+      const list = document.getElementById('item-list');
+      let total = 0;
+
+      order.cart.forEach(item => {
+        const itemTotal = item.price * item.quantity;
+        total += itemTotal;
+        const li = document.createElement('li');
+        li.textContent = `${item.name} - ₹${item.price} x ${item.quantity} = ₹${itemTotal}`;
+        list.appendChild(li);
+      });
+
+      if (order.discount > 0) {
+        const discountAmount = total * (order.discount / 100);
+        const finalTotal = Math.round(total - discountAmount);
+        document.getElementById('total-amount').textContent = `Discount: ${order.discount}% | Final Total: ₹${finalTotal}`;
+      } else {
+        document.getElementById('total-amount').textContent = `Total: ₹${total}`;
+      }
+    }
+  </script>
+
+</body>
+</html>

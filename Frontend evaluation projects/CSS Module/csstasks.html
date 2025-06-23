@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CSS Module Tasks</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f2f2f2;
+    }
+    h2 {
+      background: #444;
+      color: #fff;
+      padding: 10px;
+    }
+    section {
+      margin-bottom: 40px;
+      padding: 10px;
+      background: #fff;
+      border: 1px solid #ccc;
+    }
+
+    /* Task 1 */
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+    }
+    .grid-container div {
+      background: #87ceeb;
+      padding: 20px;
+      text-align: center;
+    }
+
+    /* Task 2 */
+    .flex-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .flex-container div {
+      flex: 1 1 30%;
+      background: #f4a460;
+      padding: 20px;
+      text-align: center;
+    }
+
+    /* Task 3 */
+    .fade-in {
+      opacity: 0;
+      animation: fadeIn 2s ease-in forwards;
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    /* Task 4 */
+    .scroll-box {
+      height: 100px;
+      overflow-y: scroll;
+      padding: 10px;
+      background: #fafafa;
+    }
+    .scroll-box::-webkit-scrollbar {
+      width: 10px;
+    }
+    .scroll-box::-webkit-scrollbar-thumb {
+      background: #555;
+      border-radius: 5px;
+    }
+
+    /* Task 5 */
+    .parallax {
+      background-image: url('https://via.placeholder.com/1200x800');
+      height: 300px;
+      background-attachment: fixed;
+      background-size: cover;
+      background-position: center;
+    }
+
+    /* Task 6 */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 100%;
+      background: #eee;
+      min-width: 120px;
+      box-shadow: 0 0 5px #999;
+      animation: fadeIn 0.3s ease;
+    }
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    /* Task 7 */
+    .flex-grid {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .flex-grid div {
+      flex: 1 1 300px;
+      background: #dda0dd;
+      margin: 10px;
+      padding: 20px;
+    }
+
+    /* Task 8 */
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      margin-top: 10px;
+    }
+    .tooltip-text {
+      visibility: hidden;
+      background-color: black;
+      color: #fff;
+      padding: 5px;
+      border-radius: 4px;
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+    }
+    .tooltip:hover .tooltip-text {
+      visibility: visible;
+    }
+
+    /* Task 9 */
+    .card {
+      width: 200px;
+      height: 150px;
+      background: #add8e6;
+      transition: transform 0.3s;
+      text-align: center;
+      padding: 50px 0;
+    }
+    .card:hover {
+      transform: perspective(600px) rotateY(15deg);
+    }
+
+    /* Task 10 */
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .post {
+      background: #ffe4b5;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <section>
+    <h2>Task 1: Responsive Multi-Column Layout using CSS Grid</h2>
+    <div class="grid-container">
+      <div>One</div><div>Two</div><div>Three</div>
+      <div>Four</div><div>Five</div><div>Six</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Task 2: Flexbox Layout with Multiple Rows and Columns</h2>
+    <div class="flex-container">
+      <div>1</div><div>2</div><div>3</div><div>4</div><div>5</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Task 3: Smooth Text Fade-In Animation</h2>
+    <h3 class="fade-in">Welcome to My Site</h3>
+  </section>
+
+  <section>
+    <h2>Task 4: Style the Scrollbar</h2>
+    <div class="scroll-box">
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sit amet lorem at erat commodo condimentum. Sed id bibendum augue. Pellentesque nec feugiat arcu. Aenean nec sapien id nulla lacinia.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Task 5: Parallax Scrolling Effect</h2>
+    <div class="parallax"></div>
+  </section>
+
+  <section>
+    <h2>Task 6: Animated Dropdown Menu</h2>
+    <div class="dropdown">
+      <button>Menu</button>
+      <div class="dropdown-content">
+        <a href="#">Item 1</a><br>
+        <a href="#">Item 2</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Task 7: Responsive Multi-Column Layout using Flexbox</h2>
+    <div class="flex-grid">
+      <div>Box A</div><div>Box B</div><div>Box C</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Task 8: Tooltip on Hover</h2>
+    <div class="tooltip">Hover me
+      <span class="tooltip-text">Tooltip Info</span>
+    </div>
+  </section>
+
+  <section>
+    <h2>Task 9: 3D Hover Effect on Element</h2>
+    <div class="card">Hover Me</div>
+  </section>
+
+  <section>
+    <h2>Task 10: Responsive Blog Layout using CSS Grid</h2>
+    <div class="blog-grid">
+      <div class="post">Post 1</div>
+      <div class="post">Post 2</div>
+      <div class="post">Post 3</div>
+    </div>
+  </section>
+
+</body>
+</html>

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JS8-Shopping Cart with Rating System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1, h2 {
+      text-align: center;
+    }
+
+    .products, .cart, .checkout {
+      max-width: 800px;
+      margin: 20px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .product {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 10px 0;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .product-info {
+      flex: 1;
+    }
+
+    .product button {
+      background: green;
+      color: white;
+      padding: 5px 12px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 10px 0;
+    }
+
+    .cart-item input {
+      width: 50px;
+      text-align: center;
+    }
+
+    .remove-btn {
+      background: crimson;
+      color: white;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+
+    .remove-btn:hover {
+      background-color: darkred;
+    }
+
+    .total {
+      text-align: right;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    hr {
+      border: 1px solid #ccc;
+    }
+
+    .filter {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .filter input {
+      width: 80px;
+      padding: 5px;
+      margin: 0 5px;
+    }
+
+    .filter button {
+      padding: 5px 10px;
+    }
+
+    .checkout form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .checkout input, .checkout textarea {
+      padding: 8px;
+      font-size: 16px;
+    }
+
+    .checkout button {
+      width: 150px;
+      padding: 10px;
+      background: navy;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .error {
+      color: red;
+      font-size: 14px;
+    }
+
+    .success {
+      color: green;
+      font-size: 14px;
+    }
+
+    .discount-box {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .discount-box input {
+      flex: 1;
+    }
+
+    /* ⭐️ New CSS for Star Rating System */
+    .stars {
+      display: inline-block;
+      font-size: 20px;
+      color: #ccc;
+      cursor: pointer;
+    }
+
+    .stars .star.filled {
+      color: gold;
+    }
+
+    .rating-display {
+      font-size: 14px;
+      color: #333;
+      margin-top: 4px;
+    }
+
+    .wishlist-btn {
+    background: orange;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px;
+    }
+
+  </style>
+</head>
+<body>
+
+  <h1>Shopping Cart</h1>
+
+  <!-- Price Filter -->
+  <div class="products">
+    <div class="filter">
+      <label>Min Price: <input type="number" id="min-price" /></label>
+      <label>Max Price: <input type="number" id="max-price" /></label>
+      <button onclick="filterProducts()">Filter</button>
+    </div>
+
+    <h2>Available Products</h2>
+    <div id="product-list"></div>
+  </div>
+
+  <!-- Cart -->
+  <div class="cart">
+    <h2>Your Cart</h2>
+    <div id="cart-container"></div>
+    <hr>
+    <div class="total">Total: ₹<span id="cart-total">0</span></div>
+  </div>
+
+  <!-- Checkout -->
+  <div class="checkout">
+    <h2>Checkout</h2>
+
+    <!-- Discount Code -->
+    <div class="discount-box">
+      <input type="text" id="discount-code" placeholder="Enter Discount Code (e.g. SAVE10)">
+      <button type="button" onclick="applyDiscount()">Apply</button>
+    </div>
+    <div id="discount-message"></div>
+
+    <!-- Checkout Form -->
+    <form id="checkout-form" onsubmit="return validateForm()">
+      <input type="text" id="name" placeholder="Full Name" />
+      <textarea id="address" placeholder="Shipping Address"></textarea>
+      <input type="email" id="email" placeholder="Email" />
+      <input type="text" id="card" placeholder="Credit Card Number (16 digits)" />
+      <div class="error" id="form-error"></div>
+      <button type="submit">Submit Order</button>
+    </form>
+  </div>
+
+  <script>
+    const cart = [];
+    let discountApplied = false;
+    let discountPercent = 0;
+
+    const products = [
+      { name: 'Milk', price: 60, ratings: [] },
+      { name: 'Bread', price: 40, ratings: [] },
+      { name: 'Eggs', price: 100, ratings: [] },
+      { name: 'Butter', price: 150, ratings: [] },
+      { name: 'Cheese', price: 200, ratings: [] }
+    ];
+
+    function displayProducts(filtered = products) {
+      const productList = document.getElementById('product-list');
+      productList.innerHTML = '';
+      filtered.forEach((product, index) => {
+        const avg = product.ratings.length
+          ? (product.ratings.reduce((a, b) => a + b, 0) / product.ratings.length).toFixed(1)
+          : 'No ratings yet';
+
+        const div = document.createElement('div');
+        div.className = 'product';
+        
+        div.innerHTML = `
+  <div class="product-info">
+    <strong>${product.name}</strong> - ₹${product.price}
+    <div class="stars" data-index="${index}">
+      ${[1, 2, 3, 4, 5].map(i => `<span class="star" data-star="${i}">&#9733;</span>`).join('')}
+    </div>
+    <div class="rating-display">Average Rating: ${avg}</div>
+  </div>
+  <div>
+    <button onclick="addToCart('${product.name}', ${product.price})">Add to Cart</button>
+    <button class="wishlist-btn" onclick="addToWishlist(${index})">Add to Wishlist</button>
+  </div>
+`;
+
+
+        productList.appendChild(div);
+      });
+
+      // Add star click events
+      document.querySelectorAll('.stars').forEach(starContainer => {
+        starContainer.addEventListener('click', function (e) {
+          const index = this.getAttribute('data-index');
+          const rating = parseInt(e.target.getAttribute('data-star'));
+          if (rating) {
+            products[index].ratings.push(rating);
+            displayProducts(filtered); // Re-render
+          }
+        });
+      });
+
+      // Fill stars based on average
+      document.querySelectorAll('.stars').forEach((container, i) => {
+        const avg = Math.round(products[i].ratings.reduce((a, b) => a + b, 0) / (products[i].ratings.length || 1));
+        container.querySelectorAll('.star').forEach((star, j) => {
+          star.classList.toggle('filled', j < avg);
+        });
+      });
+    }
+
+    function filterProducts() {
+      const min = parseFloat(document.getElementById('min-price').value) || 0;
+      const max = parseFloat(document.getElementById('max-price').value) || Infinity;
+      const filtered = products.filter(p => p.price >= min && p.price <= max);
+      displayProducts(filtered);
+    }
+
+    function addToCart(productName, price) {
+      const existingItem = cart.find(item => item.name === productName);
+      if (existingItem) {
+        existingItem.quantity++;
+      } else {
+        cart.push({ name: productName, price: price, quantity: 1 });
+      }
+      displayCart();
+    }
+
+    function displayCart() {
+      const cartContainer = document.getElementById('cart-container');
+      cartContainer.innerHTML = '';
+      let total = 0;
+
+      cart.forEach((item, index) => {
+        const itemTotal = item.quantity * item.price;
+        total += itemTotal;
+
+        const cartItem = document.createElement('div');
+        cartItem.className = 'cart-item';
+
+        cartItem.innerHTML = `
+          <span>${item.name} - ₹${item.price} x 
+            <input type="number" min="1" value="${item.quantity}" onchange="updateQuantity(${index}, this.value)">
+            = ₹${itemTotal}
+          </span>
+          <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
+        `;
+
+        cartContainer.appendChild(cartItem);
+      });
+
+      let finalTotal = total;
+      if (discountApplied && discountPercent > 0) {
+        finalTotal = finalTotal - (finalTotal * discountPercent / 100);
+      }
+
+      document.getElementById('cart-total').textContent = Math.round(finalTotal);
+    }
+
+    function updateQuantity(index, value) {
+      const quantity = parseInt(value);
+      if (quantity >= 1) {
+        cart[index].quantity = quantity;
+        displayCart();
+      }
+    }
+
+    function removeItem(index) {
+      cart.splice(index, 1);
+      displayCart();
+    }
+
+    function applyDiscount() {
+      const code = document.getElementById('discount-code').value.trim();
+      const message = document.getElementById('discount-message');
+      if (code === 'SAVE10') {
+        discountApplied = true;
+        discountPercent = 10;
+        message.textContent = '✅ Discount code applied: 10% off!';
+        message.className = 'success';
+      } else {
+        discountApplied = false;
+        discountPercent = 0;
+        message.textContent = '❌ Invalid discount code.';
+        message.className = 'error';
+      }
+      displayCart();
+    }
+
+    function validateForm() {
+      const name = document.getElementById('name').value.trim();
+      const address = document.getElementById('address').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const card = document.getElementById('card').value.trim();
+      const errorDiv = document.getElementById('form-error');
+      errorDiv.textContent = '';
+
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const cardPattern = /^\d{16}$/;
+
+      if (!name || !address || !email || !card) {
+        errorDiv.textContent = 'All fields are required.';
+        return false;
+      }
+
+      if (!emailPattern.test(email)) {
+        errorDiv.textContent = 'Please enter a valid email address.';
+        return false;
+      }
+
+      if (!cardPattern.test(card)) {
+        errorDiv.textContent = 'Please enter a valid 16-digit credit card number.';
+        return false;
+      }
+
+      alert('Order submitted successfully!');
+      return true;
+    }
+
+    displayProducts();
+
+    function addToWishlist(index) {
+  const product = products[index];
+  let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+  const exists = wishlist.some(p => p.name === product.name);
+  if (!exists) {
+    wishlist.push(product);
+    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+    alert(`${product.name} added to wishlist.`);
+  } else {
+    alert(`${product.name} is already in your wishlist.`);
+  }
+}
+
+  </script>
+
+</body>
+</html>

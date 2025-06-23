@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Interactive Class Calendar</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background: #f4f4f4;
+    }
+    h1 {
+      text-align: center;
+    }
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .day {
+      background: white;
+      border-radius: 8px;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      transition: 0.2s;
+    }
+    .day:hover {
+      background-color: #dfefff;
+    }
+    .lecture { background-color: #cce5ff; }
+    .office-hour { background-color: #d4edda; }
+    .exam { background-color: #f8d7da; }
+
+    .details {
+      margin-top: 20px;
+      padding: 15px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+
+    .legend {
+      margin-top: 20px;
+    }
+
+    .legend span {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 5px;
+      margin-right: 10px;
+      font-size: 14px;
+    }
+    .legend .lecture { background: #cce5ff; }
+    .legend .office-hour { background: #d4edda; }
+    .legend .exam { background: #f8d7da; }
+  </style>
+</head>
+<body>
+
+  <h1>Class Schedule Calendar - June 2025</h1>
+
+  <div class="legend">
+    <span class="lecture">Lecture</span>
+    <span class="office-hour">Office Hour</span>
+    <span class="exam">Exam</span>
+  </div>
+
+  <div class="calendar" id="calendar"></div>
+
+  <div class="details" id="details">
+    <strong>Click a date to see details.</strong>
+  </div>
+
+  <script>
+    const events = {
+      3: { title: "Math Lecture", type: "lecture", time: "10:00 AM - 11:00 AM" },
+      5: { title: "Physics Exam", type: "exam", time: "2:00 PM - 4:00 PM" },
+      8: { title: "Office Hours with Prof. Smith", type: "office-hour", time: "1:00 PM - 2:00 PM" },
+      15: { title: "Chemistry Lecture", type: "lecture", time: "9:00 AM - 10:00 AM" },
+      20: { title: "Biology Office Hour", type: "office-hour", time: "3:00 PM - 4:00 PM" },
+      25: { title: "Final Exam", type: "exam", time: "10:00 AM - 1:00 PM" }
+    };
+
+    const calendar = document.getElementById("calendar");
+    const details = document.getElementById("details");
+
+    for (let day = 1; day <= 30; day++) {
+      const dayDiv = document.createElement("div");
+      dayDiv.className = "day";
+      dayDiv.textContent = day;
+
+      if (events[day]) {
+        dayDiv.classList.add(events[day].type);
+      }
+
+      dayDiv.addEventListener("click", () => {
+        if (events[day]) {
+          const event = events[day];
+          details.innerHTML = `
+            <h3>Event on June ${day}</h3>
+            <p><strong>Title:</strong> ${event.title}</p>
+            <p><strong>Time:</strong> ${event.time}</p>
+            <p><strong>Type:</strong> ${event.type.charAt(0).toUpperCase() + event.type.slice(1)}</p>
+          `;
+        } else {
+          details.innerHTML = `<strong>No events on June ${day}.</strong>`;
+        }
+      });
+
+      calendar.appendChild(dayDiv);
+    }
+  </script>
+</body>
+</html>

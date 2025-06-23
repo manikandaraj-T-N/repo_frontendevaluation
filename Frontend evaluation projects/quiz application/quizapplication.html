@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Online Quiz</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f6f8;
+      padding: 20px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #2980b9;
+    }
+
+    form {
+      background: #fff;
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    fieldset {
+      border: none;
+      margin-bottom: 20px;
+    }
+
+    legend {
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #2c3e50;
+    }
+
+    label {
+      display: block;
+      margin: 5px 0;
+      cursor: pointer;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #2980b9;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #1c5980;
+    }
+
+    #result {
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 20px;
+      color: #27ae60;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Simple Quiz</h2>
+
+  <form id="quizForm">
+    <fieldset>
+      <legend>1. What is the capital of India?</legend>
+      <label><input type="radio" name="q1" value="Delhi" required> Delhi</label>
+      <label><input type="radio" name="q1" value="Mumbai"> Mumbai</label>
+      <label><input type="radio" name="q1" value="Kolkata"> Kolkata</label>
+    </fieldset>
+
+    <fieldset>
+      <legend>2. HTML stands for?</legend>
+      <label><input type="radio" name="q2" value="HyperText Markup Language" required> HyperText Markup Language</label>
+      <label><input type="radio" name="q2" value="HyperText Machine Language"> HyperText Machine Language</label>
+    </fieldset>
+
+    <button type="submit">Submit</button>
+    <div id="result"></div>
+  </form>
+
+  <script>
+    const form = document.getElementById('quizForm');
+    const result = document.getElementById('result');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // Correct answers
+      const answers = {
+        q1: "Delhi",
+        q2: "HyperText Markup Language"
+      };
+
+      let score = 0;
+
+      const formData = new FormData(form);
+
+      for (let [question, correctAnswer] of Object.entries(answers)) {
+        if (formData.get(question) === correctAnswer) {
+          score++;
+        }
+      }
+
+      result.textContent = `You scored ${score} out of ${Object.keys(answers).length}.`;
+    });
+  </script>
+</body>
+</html>

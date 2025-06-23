@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Registration</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f6f9;
+      margin: 0;
+      padding: 40px 20px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #2980b9;
+    }
+
+    form {
+      max-width: 500px;
+      margin: 20px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    }
+
+    label {
+      font-weight: 600;
+      margin-top: 10px;
+      display: block;
+      color: #2c3e50;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 15px;
+      transition: 0.3s ease;
+    }
+
+    input:focus, select:focus {
+      border-color: #2980b9;
+      outline: none;
+      box-shadow: 0 0 5px rgba(41, 128, 185, 0.3);
+    }
+
+    button {
+      background: #2980b9;
+      color: white;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1c5980;
+    }
+
+    #success-message {
+      text-align: center;
+      color: green;
+      font-weight: bold;
+      margin-top: 20px;
+      display: none;
+    }
+
+    @media (max-width: 600px) {
+      form {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h2>Student Registration Form</h2>
+
+  <form id="registrationForm">
+    <label for="fullname">Full Name:</label>
+    <input type="text" name="fullname" id="fullname" required>
+
+    <label for="email">Email:</label>
+    <input type="email" name="email" id="email" required>
+
+    <label for="phone">Phone Number:</label>
+    <input type="tel" name="phone" id="phone" pattern="[0-9]{10}" required>
+    <small>Enter a 10-digit phone number</small>
+
+    <label for="course">Course:</label>
+    <select name="course" id="course" required>
+      <option value="">Select Course</option>
+      <option value="html">HTML</option>
+      <option value="css">CSS</option>
+      <option value="js">JavaScript</option>
+    </select>
+
+    <button type="submit">Register</button>
+  </form>
+
+  <div id="success-message">✔️ Data was saved successfully!</div>
+
+  <script>
+    const form = document.getElementById('registrationForm');
+    const successMessage = document.getElementById('success-message');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault(); // prevent actual form submission
+      successMessage.style.display = 'block'; // show the success message
+      form.reset(); // optional: clear the form after submission
+    });
+  </script>
+</body>
+</html>
